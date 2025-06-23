@@ -1,0 +1,41 @@
+name: nyobabaruhehe
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  carousel_slider: ^5.1.1
+  cloud_firestore: ^5.6.9
+  dio: ^5.8.0+1
+  firebase_core: ^3.14.0
+  flutter:
+    sdk: flutter
+  flutter_map: ^8.1.1
+  flutter_map_animations: ^0.9.0
+  geolocator: ^14.0.1
+  google_fonts: ^6.2.1
+  image: ^4.5.4
+  image_picker: ^1.1.2
+  latlong2: ^0.9.1
+  open_route_service: ^1.2.7
+  permission_handler: ^12.0.0+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/placeholder.png
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
