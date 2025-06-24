@@ -7,6 +7,9 @@ import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:nyoba_modul_5/screens/home/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nyoba_modul_5/screens/auth/login_screen.dart';
+import 'package:nyoba_modul_5/screens/home/faq.dart';
+import 'package:nyoba_modul_5/screens/map/map_screen.dart';
+import 'package:nyoba_modul_5/screens/map/destination_detail_screen.dart' hide MapScreen; // Tambahkan impor untuk MapScreen
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  String _userName = "User"; // Default value
+  String _userName = "User";
   String? _userImageUrl;
 
   @override
@@ -44,10 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
   
+  // Ubah halaman untuk tab MAPS menjadi MapScreen
   final List<Widget> _pages = [
-    HomePage(),
-    const Center(child: Text("Chat atau Tambal-ban", style: TextStyle(fontSize: 24))),
-    const Center(child: Text("Notifikasi", style: TextStyle(fontSize: 24))),
+    const HomePage(),
+    const MapScreen(), // Ganti dengan MapScreen
+    const FAQPage(),
     const ProfileScreen(),
   ];
 
@@ -66,7 +70,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _selectedIndex == 3 ? "Profile Pengguna" : "Go-Ban", // Berubah sesuai tab
+          _selectedIndex == 3 ? "Profile Pengguna" : 
+          _selectedIndex == 1 ? "Peta Tambal Ban" : // Judul khusus untuk tab MAPS
+          "Go-Ban",
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -90,10 +96,13 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: _selectedIndex == 0 // Hanya tampilkan di beranda
           ? FloatingActionButton(
               onPressed: () {
-                // Tambahkan fungsi untuk FAB di beranda
+                // Beralih ke tab MAPS ketika FAB ditekan
+                setState(() {
+                  _selectedIndex = 1;
+                });
               },
               backgroundColor: const Color(0xFF41B06E),
-              child: const Icon(Icons.local_car_wash, color: Colors.white), // Ganti ikon
+              child: const Icon(Icons.map_rounded, color: Colors.white),
             )
           : null,
       bottomNavigationBar: FlashyTabBar(
@@ -107,26 +116,26 @@ class _HomeScreenState extends State<HomeScreen> {
               'Beranda',
               style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
             ),
-            activeColor: const Color(0xFF41B06E), // Changed from selectedColor
-            inactiveColor: Colors.grey,          // Changed from unselectedColor
+            activeColor: const Color(0xFF41B06E),
+            inactiveColor: Colors.grey,
           ),
           FlashyTabBarItem(
-            icon: const Icon(Icons.chat_bubble_outline_outlined),
+            icon: const Icon(Icons.map_rounded),
             title: Text(
-              'Chat',
+              'MAPS',
               style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
             ),
-            activeColor: const Color(0xFF41B06E), // Changed from selectedColor
-            inactiveColor: Colors.grey,          // Changed from unselectedColor
+            activeColor: const Color(0xFF41B06E),
+            inactiveColor: Colors.grey,
           ),
           FlashyTabBarItem(
-            icon: const Icon(Icons.notifications_on_rounded),
+            icon: const Icon(Icons.question_answer_outlined),
             title: Text(
-              'Notif',
+              'FAQ',
               style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
             ),
-            activeColor: const Color(0xFF41B06E), // Changed from selectedColor
-            inactiveColor: Colors.grey,          // Changed from unselectedColor
+            activeColor: const Color(0xFF41B06E),
+            inactiveColor: Colors.grey,
           ),
           FlashyTabBarItem(
             icon: const Icon(Icons.person),
@@ -134,8 +143,8 @@ class _HomeScreenState extends State<HomeScreen> {
               'Profil',
               style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
             ),
-            activeColor: const Color(0xFF41B06E), // Changed from selectedColor
-            inactiveColor: Colors.grey,          // Changed from unselectedColor
+            activeColor: const Color(0xFF41B06E),
+            inactiveColor: Colors.grey,
           ),
         ],
         animationCurve: Curves.easeIn,
@@ -157,7 +166,6 @@ class HomePage extends StatelessWidget {
     final userName = state?._userName ?? "User";
     final userImageUrl = state?._userImageUrl;
 
-    final user = FirebaseAuth.instance.currentUser;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -190,7 +198,7 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Hello, $userName", // Gunakan nama dari Firestore
+                          "Hello, $userName",
                           style: GoogleFonts.poppins(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -237,92 +245,6 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            
-            // // Categories Section
-            // Text(
-            //   "Kategori",
-            //   style: GoogleFonts.poppins(
-            //     fontSize: 18,
-            //     fontWeight: FontWeight.bold,
-            //     color: const Color(0xFF141E46),
-            //   ),
-            // ),
-            // const SizedBox(height: 16),
-            
-            // GridView.builder(
-            //   shrinkWrap: true,
-            //   physics: const NeverScrollableScrollPhysics(),
-            //   itemCount: 4,
-            //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            //     crossAxisCount: 2,
-            //     crossAxisSpacing: 16,
-            //     mainAxisSpacing: 16,
-            //     childAspectRatio: 1.2,
-            //   ),
-            //   itemBuilder: (context, index) {
-            //     List<String> categories = ['Motor', 'Mobil', 'Truck', 'Sepeda'];
-            //     List<String> images = [
-            //       'assets/icon/motor.png',
-            //       'assets/icon/mobil.png',
-            //       'assets/icon/truck.png',
-            //       'assets/icon/bicycle.png',
-            //     ];
-            //     List<Color> colors = [
-            //       const Color(0xFFFF9EAA),
-            //       const Color(0xFF91C8E4),
-            //       const Color(0xFFFFD966),
-            //       const Color(0xFF8DECB4),
-            //     ];
-
-            //     return InkWell(
-            //       onTap: () {
-            //         if (index == 0) {
-            //           Navigator.push(context, MaterialPageRoute(builder: (context) => const MotorPage()));
-            //         } else if (index == 1) {
-            //           Navigator.push(context, MaterialPageRoute(builder: (context) => const MobilPage()));
-            //         }
-            //       },
-            //       child: Container(
-            //         decoration: BoxDecoration(
-            //           color: colors[index],
-            //           borderRadius: BorderRadius.circular(16),
-            //           boxShadow: [
-            //             BoxShadow(
-            //               color: const Color(0x1A000000),
-            //               blurRadius: 6,
-            //               offset: const Offset(0, 3),
-            //             ),
-            //           ],
-            //         ),
-            //         child: Column(
-            //           mainAxisAlignment: MainAxisAlignment.center,
-            //           children: [
-            //             Container(
-            //               height: 70,
-            //               width: 70,
-            //               decoration: BoxDecoration(
-            //                 image: DecorationImage(
-            //                   image: AssetImage(images[index]),
-            //                   fit: BoxFit.contain,
-            //                 ),
-            //               ),
-            //             ),
-            //             const SizedBox(height: 12),
-            //             Text(
-            //               categories[index],
-            //               style: GoogleFonts.poppins(
-            //                 fontSize: 16,
-            //                 fontWeight: FontWeight.w600,
-            //                 color: const Color(0xFF141E46),
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // ),
-            // const SizedBox(height: 24),
             
             // Recommendations Section
             Row(

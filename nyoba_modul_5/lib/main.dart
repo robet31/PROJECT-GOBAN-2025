@@ -1,9 +1,11 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nyoba_modul_5/screens/auth/profile_form_screen.dart';
+import 'package:nyoba_modul_5/screens/map/map_screen.dart';
 import 'package:nyoba_modul_5/services/notification_service.dart';
 // import 'package:nyoba_modul_5/services/cloudinary_service.dart';
 import 'firebase_options.dart';
@@ -17,28 +19,44 @@ import 'screens/onboarding_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Inisialisasi Firebase hanya satu kali
 
   try {
+    // await Firebase.initializeApp(
+    //   options: const FirebaseOptions(
+    //     apiKey: "AIzaSyBiaOeNB9g77ZSzCSNLK2-lTjCycuRlUK0",
+    //     appId: "1:475941342310:android:856f6c937dc0c7bf60b1a7",
+    //     messagingSenderId: "475941342310",
+    //     projectId: "modul-5-e2bb6",
+    //     storageBucket: "modul-5-e2bb6.appspot.com",
+    //   ),
+    // );
+
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    // Inisialisasi notifikasi
-    // await NotificationService().init();
+
+    // ✅ Inisialisasi notifikasi
+    await NotificationService().init();
+
+    // ✅ Minta izin notifikasi (Android 13+)
+    await AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+
     print("Firebase initialized successfully");
 
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
     await dotenv.load(fileName: ".env");
+
     runApp(const MyApp());
   } catch (e) {
     print("Initialization error: $e");
-    // Fallback UI
-    runApp(MaterialApp(
-      home: Scaffold(
-        body: Center(child: Text("Initialization error: $e")),
+    runApp(
+      MaterialApp(
+        home: Scaffold(body: Center(child: Text("Initialization error: $e"))),
       ),
-    ));
+    );
   }
 }
 
@@ -72,6 +90,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/onboarding': (context) => const OnboardingScreen(),
         '/profile-form': (context) => const ProfileFormScreen(),
+        '/map': (context) => const MapScreen(), // Pastikan route untuk '/map' ada
       },
     );
   }
@@ -98,12 +117,12 @@ class _AuthWrapperState extends State<AuthWrapper> {
   Future<void> _initialize() async {
     try {
       // Pastikan Firebase sudah diinisialisasi
-      if (Firebase.apps.isEmpty) {
-        await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        );
-      }
-      
+      // if (Firebase.apps.isEmpty) {
+      //   await Firebase.initializeApp(
+      //     options: DefaultFirebaseOptions.currentPlatform,
+      //   );
+      // }
+
       await Future.delayed(const Duration(seconds: 1));
       setState(() => _isInitializing = false);
     } catch (e) {
@@ -118,9 +137,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
   @override
   Widget build(BuildContext context) {
     if (_isInitializing) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     if (_hasError) {
@@ -149,10 +166,11 @@ class _AuthWrapperState extends State<AuthWrapper> {
             return const WelcomeScreen();
           } else {
             return FutureBuilder<DocumentSnapshot>(
-              future: FirebaseFirestore.instance
-                  .collection('Profile')
-                  .doc(user.uid)
-                  .get(),
+              future:
+                  FirebaseFirestore.instance
+                      .collection('Profile')
+                      .doc(user.uid)
+                      .get(),
               builder: (context, profileSnapshot) {
                 if (profileSnapshot.connectionState == ConnectionState.done) {
                   if (profileSnapshot.hasError) {
@@ -164,8 +182,9 @@ class _AuthWrapperState extends State<AuthWrapper> {
                   }
 
                   final profileData = profileSnapshot.data?.data() as Map?;
-                  final profileCompleted = profileData?['profileCompleted'] ?? false;
-                  
+                  final profileCompleted =
+                      profileData?['profileCompleted'] ?? false;
+
                   if (profileCompleted) {
                     return const HomeScreen();
                   } else {
@@ -179,9 +198,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
             );
           }
         }
-        return const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        );
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
       },
     );
   }

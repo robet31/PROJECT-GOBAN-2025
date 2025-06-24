@@ -362,9 +362,10 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
       appBar: AppBar(
         title: const Text(
           'Complete Your Profile',
-          style: TextStyle(fontFamily: 'Poppins'),
+          style: TextStyle(fontFamily: 'Poppins',fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color(0xFF41B06E),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -628,6 +629,7 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Poppins',
+                            color: Colors.white
                           ),
                         ),
               ),

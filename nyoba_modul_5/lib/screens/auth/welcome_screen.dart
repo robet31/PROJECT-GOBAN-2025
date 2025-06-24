@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 
@@ -20,7 +19,7 @@ class WelcomeScreen extends StatelessWidget {
               width: 200,
               height: 200,
               decoration: BoxDecoration(
-                color: const Color(0x338DECB4), // .withOpacity(0.2)
+                color: const Color(0x338DECB4),
                 borderRadius: BorderRadius.circular(100),
               ),
             ),
@@ -32,7 +31,7 @@ class WelcomeScreen extends StatelessWidget {
               width: 200,
               height: 200,
               decoration: BoxDecoration(
-                color: const Color(0x3341B06E), // .withOpacity(0.2)
+                color: const Color(0x3341B06E),
                 borderRadius: BorderRadius.circular(100),
               ),
             ),
@@ -45,40 +44,68 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Animasi
+                  // Logo Go-Ban dengan rounded border
                   Container(
-                    width: 200,
-                    height: 200,
-                    child: Lottie.asset(
-                      'assets/icon/lokasi.json',
-                      fit: BoxFit.contain,
+                    width: 180,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40), // Atur tingkat kebulatan di sini
+                      border: Border.all(
+                        color: const Color(0xFF41B06E), // Warna border hijau
+                        width: 3,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(37), // Sedikit lebih kecil dari border
+                      child: Image.asset(
+                        'assets/icon/logo.png',
+                        fit: BoxFit.contain,
+                        // Fallback jika gambar gagal dimuat
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: const Color(0xFF41B06E).withOpacity(0.1),
+                          child: const Icon(Icons.car_repair, size: 80, color: Color(0xFF41B06E)),
+                        ),
+                      ),
                     ),
                   ),
                   
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 25),
                   
-                  // Judul
-                  const Text(
-                    "GOBAN",
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF141E46),
-                      fontFamily: 'Poppins',
-                    ),
-                  ),
+                  // // Judul
+                  // const Text(
+                  //   "GOBAN",
+                  //   style: TextStyle(
+                  //     fontSize: 36, // Ukuran lebih besar
+                  //     fontWeight: FontWeight.bold,
+                  //     color: Color(0xFF141E46),
+                  //     fontFamily: 'Poppins',
+                  //     letterSpacing: 1.5,
+                  //   ),
+                  // ),
                   
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
                   
                   // Subjudul
-                  const Text(
-                    "Darurat ban bocor? Tenang, Go-Ban solusinya!",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF141E46),
-                      fontFamily: 'Poppins',
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text(
+                      "Darurat ban bocor? Tenang, Go-Ban solusinya!",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFF141E46),
+                        fontFamily: 'Poppins',
+                        height: 1.4,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                   
                   const SizedBox(height: 40),
@@ -86,19 +113,20 @@ class WelcomeScreen extends StatelessWidget {
                   // Tombol Login
                   SizedBox(
                     width: double.infinity,
-                    height: 50,
+                    height: 55, // Tinggi tombol ditambah
                     child: ElevatedButton(
                       onPressed: () => Navigator.pushNamed(context, '/login'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF41B06E),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(12), // Border lebih bulat
                         ),
+                        elevation: 5, // Menambahkan efek bayangan
                       ),
                       child: const Text(
                         "Login",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18, // Ukuran font lebih besar
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           fontFamily: 'Poppins',
@@ -107,33 +135,38 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                   
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 18),
                   
                   // Tombol Register
                   SizedBox(
                     width: double.infinity,
-                    height: 50,
+                    height: 55, // Tinggi tombol ditambah
                     child: OutlinedButton(
                       onPressed: () => Navigator.pushNamed(context, '/register'),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 15),
-                        side: const BorderSide(color: Color(0xFF41B06E)),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(
+                          color: Color(0xFF41B06E), 
+                          width: 2, // Garis lebih tebal
                         ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // Border lebih bulat
+                        ),
+                        backgroundColor: Colors.white.withOpacity(0.9),
                       ),
                       child: const Text(
                         "Register",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18, // Ukuran font lebih besar
                           color: Color(0xFF41B06E),
                           fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
                   
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 20),
                   
                   // Tombol Onboarding
                   TextButton(
@@ -145,6 +178,8 @@ class WelcomeScreen extends StatelessWidget {
                       style: TextStyle(
                         color: Color(0xFF41B06E),
                         fontFamily: 'Poppins',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),

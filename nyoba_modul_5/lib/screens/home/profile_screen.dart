@@ -26,10 +26,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
-    final doc = await FirebaseFirestore.instance
-        .collection('Profile')
-        .doc(user.uid)
-        .get();
+    final doc =
+        await FirebaseFirestore.instance
+            .collection('Profile')
+            .doc(user.uid)
+            .get();
 
     if (doc.exists) {
       setState(() {
@@ -41,84 +42,104 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Tidak ada app bar
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // const SizedBox(height: 40),
-            // const Text(
-            //   "Profile Pengguna",
-            //   style: TextStyle(
-            //     fontSize: 24,
-            //     fontWeight: FontWeight.bold,
-            //     fontFamily: 'Poppins',
-            //   ),
-            // ),
+            const SizedBox(height: 10),
+            Center(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 90,
+                    backgroundImage:
+                        _userData?['imageUrl'] != null
+                            ? NetworkImage(_userData!['imageUrl'])
+                            : null,
+                    backgroundColor: const Color(0xFFE0E0E0),
+                    child:
+                        _userData?['imageUrl'] == null
+                            ? const Icon(
+                              Icons.person,
+                              size: 60,
+                              color: Colors.white70,
+                            )
+                            : null,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    _userData?['name'] ?? 'Nama Pengguna',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                  Text(
+                    _userData?['email'] ?? 'email@example.com',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 30),
-            
-            // Profile photo
-            CircleAvatar(
-              radius: 90,
-              backgroundImage: _userData?['imageUrl'] != null
-                  ? NetworkImage(_userData!['imageUrl'])
-                  : null,
-              child: _userData?['imageUrl'] == null
-                  ? const Icon(Icons.person, size: 60)
-                  : null,
-            ),
-            const SizedBox(height: 20),
-            
-            // User info
-            Text(
-              _userData?['name'] ?? 'Nama Pengguna',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins',
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
-            ),
-            Text(
-              _userData?['email'] ?? 'email@example.com',
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-                fontFamily: 'Poppins',
+              child: Column(
+                children: [
+                  _buildMenuOption(
+                    icon: Icons.edit,
+                    title: 'Edit Profile',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EditProfileScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  const Divider(height: 1),
+                  _buildMenuOption(
+                    icon: Icons.notifications,
+                    title: 'Notification',
+                    onTap: () {},
+                  ),
+                  const Divider(height: 1),
+                  _buildMenuOption(
+                    icon: Icons.location_on,
+                    title: 'Shipping Address',
+                    onTap: () {},
+                  ),
+                  const Divider(height: 1),
+                  _buildMenuOption(
+                    icon: Icons.lock,
+                    title: 'Change Password',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ChangePasswordScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 40),
-            
-            // Menu options
-            _buildMenuOption(
-              icon: Icons.edit,
-              title: 'Edit Profile',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const EditProfileScreen()),
-                );
-              },
-            ),
-            _buildMenuOption(
-              icon: Icons.notifications,
-              title: 'Notification',
-              onTap: () {},
-            ),
-            _buildMenuOption(
-              icon: Icons.location_on,
-              title: 'Shipping Address',
-              onTap: () {},
-            ),
-            _buildMenuOption(
-              icon: Icons.lock,
-              title: 'Change Password',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ChangePasswordScreen()),
-                );
-              },
             ),
           ],
         ),
@@ -133,10 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }) {
     return ListTile(
       leading: Icon(icon, color: const Color(0xFF41B06E)),
-      title: Text(
-        title,
-        style: const TextStyle(fontFamily: 'Poppins'),
-      ),
+      title: Text(title, style: const TextStyle(fontFamily: 'Poppins')),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       onTap: onTap,
     );

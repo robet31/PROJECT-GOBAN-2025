@@ -36,6 +36,18 @@ dependencies:
   timezone: ^0.10.1
   awesome_notifications: ^0.10.1
   connectivity_plus: ^6.1.4
+  google_maps_flutter: ^2.12.3
+  flutter_polyline_points: ^2.1.0
+  provider: ^6.1.5
+  geolocator: ^14.0.1
+  latlong2: ^0.9.1
+  flutter_map: ^8.1.1
+  flutter_map_animations: ^0.9.0
+  open_route_service: ^1.2.7
+  carousel_slider: ^5.1.1
+  flutter_secure_storage: ^9.2.4
+  url_launcher: ^6.3.1
+  internet_connection_checker: ^3.0.1
   
 
 
@@ -46,7 +58,6 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.3
   place_picker_google: ^0.0.6 
   # firebase_auth: ^5.5.4
-  google_maps_flutter: ^2.1.1 
 
 flutter:
   uses-material-design: true

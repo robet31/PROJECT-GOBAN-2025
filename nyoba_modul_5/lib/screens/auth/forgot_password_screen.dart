@@ -78,7 +78,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Reset Password"),
+        title: const Text("Reset Password",style: TextStyle(fontWeight: FontWeight.bold),),
         elevation: 0,
         centerTitle: true,
       ),
@@ -96,7 +96,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     child: Icon(
                       Icons.lock_reset,
                       size: 64,
-                      color: Colors.purple,
+                      color: Colors.black,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -136,10 +136,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         height: 50,
                         child: ElevatedButton.icon(
                           onPressed: _resetPassword,
-                          icon: const Icon(Icons.send),
-                          label: const Text("Send Reset Link"),
+                          icon: const Icon(Icons.send,color: Colors.white,),
+                          label: Text("Send Reset Link",style: TextStyle(color: Colors.white),),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.purple,
+                            backgroundColor: const Color(0xFF41B06E),
                             textStyle: const TextStyle(fontSize: 16),
                           ),
                         ),
@@ -149,7 +149,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     onPressed: () => Navigator.pop(context),
                     child: const Text(
                       "Back to Login",
-                      style: TextStyle(color: Colors.purple),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ],
